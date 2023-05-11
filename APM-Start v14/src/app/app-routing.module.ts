@@ -1,7 +1,9 @@
-import { NgModule } from "@angular/core";
-import { RouterModule } from "@angular/router";
-import { WelcomeComponent } from "./home/welcome.component";
-import { PageNotFoundComponent } from "./page-not-found.component";
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
+
+import { WelcomeComponent } from './home/welcome.component';
+import { PageNotFoundComponent } from './page-not-found.component';
+import { AuthGuard } from './user/auth.guard';
 
 @NgModule({
   imports: [
@@ -9,6 +11,7 @@ import { PageNotFoundComponent } from "./page-not-found.component";
       { path: 'welcome', component: WelcomeComponent },
       {
         path: 'products',
+        canActivate: [AuthGuard],
         data: { preload: false },
         loadChildren: () =>
           import('./products/product.module').then(m => m.ProductModule)
@@ -19,7 +22,4 @@ import { PageNotFoundComponent } from "./page-not-found.component";
   ],
   exports: [RouterModule]
 })
-
-export class AppRoutingModule{
-
-}
+export class AppRoutingModule { }
