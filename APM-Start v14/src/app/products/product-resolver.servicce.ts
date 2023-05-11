@@ -16,16 +16,16 @@ export class ProductResolver implements Resolve<ProductResolved> {
 
   resolve(route: ActivatedRouteSnapshot,
           state: RouterStateSnapshot): Observable<ProductResolved> {
-    const id = route.paramMap.get('id');
-    if (isNaN(+id)) {
+    const id = Number(route.paramMap.get('id'));
+    if (isNaN(id)) {
       const message = `Product id was not a number: ${id}`;
       console.error(message);
       return of({ product: null, error: message });
     }
 
-    return this.productService.getProduct(+id)
+    return this.productService.getProduct(id)
       .pipe(
-        map(product => ({ product })),
+        map(product => ({ product, error: '' })),
         catchError(error => {
           const message = `Retrieval error: ${error}`;
           console.error(message);

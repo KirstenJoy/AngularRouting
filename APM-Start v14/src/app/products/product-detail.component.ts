@@ -1,26 +1,29 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+
 import { Product, ProductResolved } from './product';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.css']
 })
-export class ProductDetailComponent implements OnInit{
+export class ProductDetailComponent implements OnInit {
   pageTitle = 'Product Detail';
-  product: Product | undefined;
-  errorMessage: string | undefined;
+  product: Product | null = null;
+  errorMessage = '';
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute,
+    private router: Router) { }
 
-  ngOnInit():void{
+  ngOnInit(): void {
     const resolvedData: ProductResolved =
       this.route.snapshot.data['resolvedData'];
-    this.errorMessage = resolvedData.error;
+    this.errorMessage = String(resolvedData.error);
     this.onProductRetrieved(resolvedData.product);
+    console.log('error message', this.errorMessage)
   }
 
-  onProductRetrieved(product: Product): void {
+  onProductRetrieved(product: Product | null): void {
     this.product = product;
 
     if (this.product) {
